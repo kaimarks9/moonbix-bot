@@ -1,0 +1,9 @@
+{
+    "interval": 3,
+    "auto_play_game": true,
+    "game_point": {
+        "low": 80,
+        "high": 230
+    }
+  
+}
