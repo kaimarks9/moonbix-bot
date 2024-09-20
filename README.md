@@ -9,15 +9,14 @@ This script can't executed or not finished yet I'll take down this project until
 Disclaimer!
 This is for education purpose only, use with ur own risk!
 
-- [Installation]
+[Installation]
 - (Termux, Linux, Windows)
 - git clone https://github.com/kaimarks9/moonbix-bot.git
 - cd moonbix-bot
 - pip install -r requirements.txt
 - python3 bot.py
-
-'''markdown
-- [Features]
+------------------------------------------------------------------------
+[Features]
 - [x] Auto Claim
 - [x] Auto Claim Daily
 - [x] Proxy Support
