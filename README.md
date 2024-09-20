@@ -1,3 +1,7 @@
+# ATTENTION
+This script can't executed or not finished yet I'll take down this project until finish and ready to use!
+
+
 # MoonBix-Bot
 ![badge](https://img.shields.io/badge/version-1.0-blue)
 
