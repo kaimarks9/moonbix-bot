@@ -11,12 +11,12 @@ This is for education purpose only, use with ur own risk!
 
 - [Installation]
 - (Termux, Linux, Windows)
-- $ git clone https://github.com/kaimarks9/moonbix-bot.git
-- $ cd moonbix-bot
-- $ pip install -r requirements.txt
-- $ python3 bot.py
+- git clone https://github.com/kaimarks9/moonbix-bot.git
+- cd moonbix-bot
+- pip install -r requirements.txt
+- python3 bot.py
 
-'''
+'''markdown
 - [Features]
 - [x] Auto Claim
 - [x] Auto Claim Daily
@@ -24,4 +24,3 @@ This is for education purpose only, use with ur own risk!
 - [x] Support Multi Account
 - [x] Auto Complete Task
 - [x] Auto Play Game (random input from user)
-'''
