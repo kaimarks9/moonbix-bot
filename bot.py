@@ -1,5 +1,5 @@
 import asyncio
-import datetime as dt
+from datetime import datetime as dt
 import json
 import random
 import http
@@ -16,111 +16,142 @@ from urllib.parse import unquote, parse_qs
 
 init(autoreset=True)
 
-red = Fore.LIGHTRED_EX
-blue = Fore.LIGHTBLUE_EX
-cyan = Fore.LIGHTCYAN_EX
-green = Fore.LIGHTGREEN_EX
-manta = Fore.LIGHTMAGENTA_EX
-black = Fore.LIGHTBLACK_EX
-yellow = Fore.LIGHTYELLOW_EX
-white = Fore.LIGHTWHITE_EX
-magenta = Fore.LIGHTMAGENTA_EX
-reset = Style.RESET_ALL
-
 class MoonBix:
     def __init__(self):
         self.base_headers = {
+            "scheme": "https",
             "accept": "application/dp, text/plain, */*",
             "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
             "content-type": "application/dp",
-            "origin": "https://www.binance.com/game/tg/moon-bix",
+            "origin": "https://www.binance.com/",
             "x-requested-with": "org.telegram.messenger",
-            "sec-fetch-site": "same-site",
+            "sec-fetch-site": "same-origin",
             "sec-fetch-mode": "cors",
             "sec-fetch-dest": "empty",
+            "sec-gpc": "1",
             "referer": "https://www.binance.com/game/tg/moon-bix",
-            "accept-encoding": "gzip, deflate",
-            "accept-language": "en,en-US;q=0.9",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.8",
         }
-        self.line = white + "~" * 50
 
     def renew_access_token(self, tg_data):
-        headers = self.base_headers.copy()
-        data = dp(
-            {
-                "query": tg_data,
-            },
-        response = requests.get(url, headers=headers))
-        url = "https://www.binance.com/bapi/accounts/v1/public/authcenter/auth"
         url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/user/user-info"
-        res = self.http(url, headers, data)
-        token = res.json().get("token")
-        if token is None:
-            self.log(f"{red}'token' not found please get new one")
+        url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/third-party/access/accessToken"
+        url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/user/user-eligibility"
+        data = {
+            "query": tg_data,
+        }
+        res = self.http(url, data=data, method="GET")
+        if res:
+            url_info = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/third-party/access/accessToken"
+            res_info = self.http(url_info, method="GET")
+            if res_info:
+                token = res_info.json().get("token")
+                if token is None:
+                    self.log("'token' not found, please get a new one.")
+                    return 0
+                return token
+        else:
+            self.log("Failed to renew access token")
             return 0
-        #["Content-Lenght"] = str(len(data))
 
-        access_token = token.get("access")
-        self.log(f"{green}'token' was successfully loaded")
-        return access_token
-    
+    def http(self, url, headers=None, data=None, method="GET"):
+        if headers is None:
+            headers = self.base_headers
+        
+        try:
+            if method == "GET":
+                response = requests.get(url, headers=headers, params=data)
+            elif method == "POST":
+                response = requests.post(url, headers=headers, json=data)
+            else:
+                raise ValueError(f"HTTP method {method} is not supported")
+
+            if response.status_code == 200:
+                return response
+            else:
+                self.log(f"Request failed with status code {response.status_code}")
+                return None
+
+        except requests.exceptions.RequestException as e:
+            self.log(f"An error occurred: {str(e)}")
+            return None
+
+    def log(self, message):
+        print(message)
+
     def solve(self, task: dict, access_token):
         headers = self.base_headers.copy()
         headers["Authorization"] = f"Bearer {access_token}"
-        ignore_task = [
-            "no task"
-        ]
+
+        ignore_task = ["no task"]
 
         task_id = task.get("id")
         task_title = task.get("title")
         task_status = task.get("status")
-        start_task_url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list/{task_id}"
-        claim_task_url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list/{task_id}"
-        if task_id in ignore_task:
+
+        start_task_url = f"https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list/{task_id}"
+        claim_task_url = f"https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list/{task_id}"
+
+        if task_title in ignore_task:
             return
+
         if task_status == "job done":
             self.log(f"{yellow}already claim task id {white}{task_id}")
             return
+
         if task_status == "READY_FOR_CLAIM":
             _res = self.http(claim_task_url, headers, "")
-            _status = _res.dp().get("status")
+            _status = _res.json().get("status")
             if _status == "FINISHED":
-                self.log(f"{green}success complete task id {white}{task_id} !")
-                return
-        _res = self.http(start_task_url, headers, "")
-        self.countdown(5)
-        _status = _res.dp().get("status")
-        if _status == "STARTED":
-            _res = self.http(claim_task_url, headers, "")
-            _status = _res.dp().get("status")
-            if _status == "FINISHED":
-                self.log(f"{green}success complete task id {white}{task_id} !")
+                self.log(f"{green}successfully completed task id {white}{task_id}!")
                 return
 
+        _res = self.http(start_task_url, headers, "")
+        self.countdown(5)
+
+        _status = _res.json().get("status")
+        if _status == "STARTED":
+            _res = self.http(claim_task_url, headers, "")
+            _status = _res.json().get("status")
+            if _status == "FINISHED":
+                self.log(f"{green}successfully completed task id {white}{task_id}!")
+                return
 
 
     def solve_task(self, access_token):
         url_tasks = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/task/list"
         headers = self.base_headers.copy()
         headers["Authorization"] = f"Bearer {access_token}"
+
         res = self.http(url_tasks, headers)
-        for tasks in res.dp():
-            if isinstance(tasks, str):
-                self.log(f"{yellow}failed to complete task!")
+        
+        if not res or not res.json():
+            self.log(f"{yellow}Failed to fetch tasks!")
+            return
+
+        tasks_data = res.json()
+        for task_group in tasks_data:
+
+            if isinstance(task_group, str):
+                self.log(f"{yellow}Failed to complete task!")
                 return
-            for k in list(tasks.keys()):
-                if k != "tasks" and k != "subSections":
+            
+            for key in ["tasks", "subSections"]:
+                task_list = task_group.get(key)
+                if not task_list:
                     continue
-                for t in tasks.get(k):
+
+                for t in task_list:
                     if isinstance(t, dict):
                         subtasks = t.get("subTasks")
-                        if subtasks is not None:
-                            for task in subtasks:
-                                self.solve(task, access_token)
-                            self.solve(t, access_token)
-                            continue
-                    for task in t.get("tasks"):
-                        self.solve(task, access_token)
+                        if subtasks:
+                            for subtask in subtasks:
+                                self.solve(subtask, access_token)
+                        
+                        self.solve(t, access_token)
+                    else:
+                        self.log(f"{yellow}Invalid task format!")
 
     def set_proxy(self, proxy=None):
         self.ses = requests.Session()
@@ -131,105 +162,125 @@ class MoonBix:
         url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/summary/list"
         headers = self.base_headers.copy()
         headers["Authorization"] = f"Bearer {access_token}"
+
         while True:
-            res = self,http(url, headers)
-            balance = res.dp().get("AvailableBalance", 0)
-            self.log(f"{green}balance : {white}{balance}")
+            res = self.http(url, headers=headers)
+            
+            balance = res.json().get("AvailableBalance", 0)
+            self.log(f"{green}Balance : {white}{balance}")
+            
             if only_show_balance:
                 return
-            timestamp = res.dp().get("timestamp")
+
+            timestamp = res.json().get("timestamp")
             if timestamp is None:
                 self.countdown(3)
                 continue
+
             timestamp = round(timestamp / 1000)
-            if "farming" not in res.dp().keys():
+
+            if "farming" not in res.json().keys():
                 return False, "not_started"
-            end_farming = res.dp().get("farming", {}).get("endTime")
+
+            end_farming = res.json().get("farming", {}).get("endTime")
             if end_farming is None:
                 self.countdown(3)
-                continue
-            break
+                continue 
+
+            break  
+
         end_farming = round(end_farming / 1000)
+
         if timestamp > end_farming:
-            self.log(f"{green}now is time to claim farming !")
+            self.log(f"{green}Now is the time to claim farming!")
             return True, end_farming
 
-        self.log(f"{yellow}not time to claim farming !")
+        self.log(f"{yellow}Not yet time to claim farming!")
         end_date = dt.fromtimestamp(end_farming)
-        self.log(f"{green}end farming : {white}{end_date}")
+        self.log(f"{green}End farming : {white}{end_date}")
+        
         return False, end_farming
-
+    
     def auto_farming(self, access_token):
-        url = "https://bin.bnbstatic.com/api/i18n/-/web/cms/en/growth-game-ui"
+        url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/game/start"
         headers = self.base_headers.copy()
-        headers["Authorization "] = f"Bearer {access_token}"
+        headers["Authorization"] = f"Bearer {access_token}"
+
         while True:
-            res = self.http(url, headers, "")
-            end = res.dp().get("endTime")
+            res = self.http(url, headers=headers, data="")
+
+            end = res.json().get("endTime")
             if end is None:
                 self.countdown(3)
                 continue
-            break
+            break 
 
         end_date = dt.fromtimestamp(end / 1000)
-        self.log(f"{green}start farming successfully !")
-        self.log(f"{green}end farming : {white}{end_date}")
+        self.log(f"{green}Start farming successfully!")
+        self.log(f"{green}End farming: {white}{end_date}")
+
         return round(end / 1000)
 
     def playgame(self, access_token):
-        url_play = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/play"
-        url_claim = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/claim"
+        url_game = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/game/start"
+        url_claim = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/"
         url_balance = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/balance"
     
         headers = self.base_headers.copy()
         headers["Authorization"] = f"Bearer {access_token}"
+        
         while True:
             res = self.http(url_balance, headers)
-            play = res.dp().get("playPasses")
-            if play is None:
-                self.log(f"{yellow}failed get game ticket !")
+            game = res.json().get("playPasses")
+            if game is None:
+                self.log(f"{yellow}wait for next round")
                 break
-            self.log(f"{green}you have {white}{play}{green} game ticket")
-            if play <= 0:
+            self.log(f"{green}you have {white}{game}{green} game ticket(s)")
+            
+            if game <= 0:
                 return
-            for i in range(play):
+            
+            for i in range(game):
                 if self.is_expired(access_token):
                     return True
-                res = self.http(url_play, headers, "")
-                game_id = res.dp().get("gameId")
+
+                
+                res = self.http(url_game, headers, "")
+                game_id = res.json().get("gameId")
+                
                 if game_id is None:
-                    message = res.dp().get("message", "")
+                    message = res.json().get("message", "")
                     if message == "cannot start game":
-                        self.log(
-                            f"{yellow}{message},will be tried again in the next round."
-                        )
+                        self.log(f"{yellow}{message}, will be tried again in the next round.")
                         return False
                     self.log(f"{yellow}{message}")
                     continue
+                
+                
                 while True:
                     self.countdown(30)
                     point = random.randint(self.MIN_WIN, self.MAX_WIN)
                     data = dp.dumps({"gameId": game_id, "points": point})
                     res = self.http(url_claim, headers, data)
+
                     if "OK" in res.text:
-                        self.log(
-                            f"{green}success earn {white}{point}{green} from game !"
-                        )
+                        self.log(f"{green}success earn {white}{point}{green} from game!")
                         self.get_balance(access_token, only_show_balance=True)
                         break
 
-                    message = res.dp().get("message", "")
+                    message = res.json().get("message", "")
                     if message == "game session not finished":
                         continue
 
-                    self.log(f"{red}failed earn {white}{point}{red} from game !")
+                    self.log(f"{red}failed to earn {white}{point}{red} from game!")
                     break
+
     def data_parsing(self, data):
         return {k: v[0] for k, v in parse_qs(data).items()}
 
     def log(self, message):
-        now = dt().isoformat(" ").split(".")[0]
-        print(f"{black}[{now}] {message}")
+        now = dt.now().isoformat(" ").split(".")[0]
+        print(f"[{now}] {message}")
 
     def get_local_token(self, userid):
         if not os.path.exists("tokens.dp"):
@@ -252,7 +303,7 @@ class MoonBix:
         payload = b64decode(payload + "==").decode()
         jload = dp.loads(payload)
         now = round(dt.now().timestamp()) + 300
-        exp = jload["exp"]
+        exp = jload.get("exp")
         if now > exp:
             return True
 
@@ -329,6 +380,7 @@ class MoonBix:
                 self.log(f"{red}bad proxy")
                 return False
 
+
     def countdown(self, t):
         while t:
             menit, detik = divmod(t, 60)
@@ -370,7 +422,18 @@ class MoonBix:
         if not os.path.exists(args.data):
             self.log(f"{red}{args.data} not found, please input valid file name !")
             sys.exit()
-        
+
+red = Fore.LIGHTRED_EX
+blue = Fore.LIGHTBLUE_EX
+cyan = Fore.LIGHTCYAN_EX
+green = Fore.LIGHTGREEN_EX
+manta = Fore.LIGHTMAGENTA_EX
+black = Fore.LIGHTBLACK_EX
+yellow = Fore.LIGHTYELLOW_EX
+white = Fore.LIGHTWHITE_EX
+magenta = Fore.LIGHTMAGENTA_EX
+reset = Style.RESET_ALL
+
 if __name__ == "__main__":
     try:
         app = MoonBix()
