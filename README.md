@@ -6,9 +6,12 @@ Disclaimer!
 This is for education purpose only, use with ur own risk!
 
 ## Installation
-'''bash
+```bash
 git clone https://github.com/kaimarks9/moonbix-bot.git
-'''
+cd moonbix-bot
+pip install -r requirements.txt
+python bot.py
+```
 ## Configuration
 - Add `query_id=xxxx` or `user_id=xxxx` to `data.txt`.
 
