@@ -20,6 +20,14 @@ python bot.py
 |-------------------------------|---------------------------------------------|
 | `Auto Claim`                  | Auto Run                                    |
 | `Auto Claim Attempts/hour`    | Auto Run                                    |
-| `Proxy Support`               | Start with proxies                          |
-| `Support Multi Account`       | Start with multi Account                    |
+| `Proxy Support`               | Start with proxy                            |
+| `Support Multi Account`       | Start with multi account                    |
 | `Auto Play Game`              | Random play game with low risk!             |
+
+```bash
+Use with VPN 1.1.1.1
+```
+```bash
+Need Support?
+```
+<a href="t.me/notnotcw"><img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white"
