@@ -27,7 +27,6 @@ python bot.py
 ```bash
 Use with VPN 1.1.1.1
 ```
-```bash
-Need Support?
-```
-https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white (https://t.me/notnotcw)
+## Need Support?
+![badge](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
+- [Contact Me](https://t.me/notnotcw)
