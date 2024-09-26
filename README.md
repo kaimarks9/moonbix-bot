@@ -6,8 +6,11 @@ Disclaimer!
 This is for education purpose only, use with ur own risk!
 
 ## Installation
-```bash
+```shell
 git clone https://github.com/kaimarks9/moonbix-bot.git
+```
+
+```
 cd moonbix-bot
 pip install -r requirements.txt
 python bot.py
@@ -24,12 +27,12 @@ python bot.py
 | `Support Multi Account`       | Start with multi account                    |
 | `Auto Play Game`              | Random play game with low risk!             |
 
-```bash
+```
 Use with VPN 1.1.1.1
 ```
 
 ## Reff Link
- [https://t.me/Binance_Moonbix_bot/start?startapp=ref_5791227811&startApp=ref_5791227811](https://t.me/Binance_Moonbix_bot/start?startapp=ref_5791227811&startApp=ref_5791227811)
+ [Moonbix](https://t.me/Binance_Moonbix_bot/start?startapp=ref_5791227811&startApp=ref_5791227811)
 
 ## Need Support?
 ![badge](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)
