@@ -1,3 +1,2 @@
-requests
-requests-html
-colorama
+pycryptodome
+smart_claimer_airdrop
