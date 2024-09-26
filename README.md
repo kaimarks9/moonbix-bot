@@ -30,4 +30,4 @@ Use with VPN 1.1.1.1
 ```bash
 Need Support?
 ```
-<a href="t.me/notnotcw"><img src="https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white"
+https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white (https://t.me/notnotcw)
