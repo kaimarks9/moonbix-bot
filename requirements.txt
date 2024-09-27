@@ -1,2 +1,5 @@
 pycryptodome
-smart_claimer_airdrop
+colorama
+requests
+requests[socks]
+
