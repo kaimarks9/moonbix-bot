@@ -42,4 +42,4 @@ Use with VPN 1.1.1.1
 
 ## Need Support?
 
-[<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/notnotcw)
+[<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/kaimarks9)
