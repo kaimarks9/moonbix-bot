@@ -2,4 +2,4 @@ pycryptodome
 colorama
 requests
 requests[socks]
-
+crayons
