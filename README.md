@@ -1,9 +1,13 @@
 # MoonBix-Bot
 ![badge](https://img.shields.io/badge/version-1.0.1-blue)
 
-# Description
-Disclaimer!
+# Disclaimer!
 This is for education purpose only, use with ur own risk!
+
+## MUST READ!!!
+```shell
+If bot.py going stuck just try play.py to start
+```
 
 ## Installation
 ```shell
@@ -15,6 +19,7 @@ cd moonbix-bot
 pip install -r requirements.txt
 python bot.py
 ```
+
 ## Configuration
 - Add `query_id=xxxx` or `user_id=xxxx` to `data.txt`.
 
