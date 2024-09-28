@@ -43,3 +43,7 @@ Use with VPN 1.1.1.1
 ## Need Support?
 
 [<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/kaimarks9)
+
+## Support my work
+[<img
+src="https://img.shields.io/badge/Binance-FCD535?style=for-the-badge&logo=binance&logoColor=white">](https://trakteer.id/kaimarks9)
