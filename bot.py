@@ -2,7 +2,7 @@ import sys
 
 sys.dont_write_bytecode = True
 
-import base
+from smart_airdrop_claimer import base
 from core.token import get_token
 from core.info import get_info
 from core.game import process_play_game
