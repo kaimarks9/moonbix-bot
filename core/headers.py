@@ -5,7 +5,7 @@ def headers(token=None):
         "Accept": "application/json, text/plain, */*",
         "Origin": "https://www.binance.info",
         "Referer": "https://www.binance.info/en/game/tg/moon-bix",
-        "User-Agent": UserAgent().random,
+        "User-Agent": UserAgent().random
     }
     if token:
         headers["X-Growth-Token"] = token
