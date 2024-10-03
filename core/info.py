@@ -5,7 +5,7 @@ from core.headers import headers
 
 
 def get_info(token, proxies=None):
-    url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/user/user-info"
+    url = "https://www.binance.info/bapi/growth/v1/friendly/growth-paas/mini-app-activity/third-party/user/user-info"
     payload = {"resourceId": 2056}
 
     try:
