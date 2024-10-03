@@ -5,7 +5,7 @@ from core.headers import headers
 
 
 def get_token(data, proxies=None):
-    url = "https://www.binance.com/bapi/growth/v1/friendly/growth-paas/third-party/access/accessToken"
+    url = "https://www.binance.info/bapi/growth/v1/friendly/growth-paas/third-party/access/accessToken"
     payload = {"queryString": data, "socialType": "telegram"}
 
     try:
